@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  # PHP service
+  php:
+    build:
+      context: .
+    container_name: symfony_php
+    volumes:
+      - .:/var/www   # Mount your local project directory to /var/www inside the container
+    ports:
+      - "9000:9000"   # Expose PHP-FPM on port 9000 (if needed)
+    environment:
+      - SYMFONY_ENV=dev
