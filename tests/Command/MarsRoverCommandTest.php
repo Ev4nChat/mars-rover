@@ -4,13 +4,14 @@
 namespace App\Tests\Command;
 
 use App\Command\MarsRoverCommand;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class MarsRoverCommandTest extends TestCase
 {
-    public function test_happy_path(): void
+    public function testHappyPath(): void
     {
         $application = new Application();
         $command = new MarsRoverCommand('app:mars-rover');
@@ -30,7 +31,7 @@ class MarsRoverCommandTest extends TestCase
         $this->assertStringContainsString('Rover 2 Final Position: 5 1 E', $output);
     }
 
-    public function test_invalid_plateau_size(): void
+    public function testInvalidPlateauSize(): void
     {
         $application = new Application();
         $command = new MarsRoverCommand('app:mars-rover');
@@ -49,7 +50,7 @@ class MarsRoverCommandTest extends TestCase
         $this->assertStringContainsString('Invalid plateau size.', $output);
     }
 
-    public function test_invalid_rover_position(): void
+    public function testInvalidRoverPosition(): void
     {
         $application = new Application();
         $command = new MarsRoverCommand('app:mars-rover');
@@ -80,7 +81,7 @@ class MarsRoverCommandTest extends TestCase
         $this->assertStringContainsString('Invalid rover 2 position or orientation', $output);
     }
 
-    public function test_invalid_array_position_count(): void
+    public function testInvalidArrayPositionCount(): void
     {
         $application = new Application();
         $command = new MarsRoverCommand('app:mars-rover');
@@ -111,7 +112,7 @@ class MarsRoverCommandTest extends TestCase
         $this->assertStringContainsString('Invalid rover 2 position or orientation', $output);
     }
 
-    public function test_rover_is_not_within_limits(): void
+    public function testRoverIsNotWithinLimits(): void
     {
         $application = new Application();
         $command = new MarsRoverCommand('app:mars-rover');
@@ -140,5 +141,91 @@ class MarsRoverCommandTest extends TestCase
 
         $output = $commandTester->getDisplay();
         $this->assertStringContainsString('Invalid rover 2 position or orientation.', $output);
+    }
+
+    public function testInvalidPlateauDimensions(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $application = new Application();
+        $command = new MarsRoverCommand('app:mars-rover');
+        $application->add($command);
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'plateau' => null,
+            'rover1' => '1 2 N',
+            'instructions1' => 'LMLMLMLMM',
+            'rover2' => '3 3 E',
+            'instructions2' => 'MMRMMRMRRM'
+        ]);
+    }
+
+    public function testInvalidRover1Position(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $application = new Application();
+        $command = new MarsRoverCommand('app:mars-rover');
+        $application->add($command);
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'plateau' => '5 5',
+            'rover1' => null,
+            'instructions1' => 'LMLMLMLMM',
+            'rover2' => '3 3 E',
+            'instructions2' => 'MMRMMRMRRM'
+        ]);
+    }
+
+    public function testInvalidRover1Instructions(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $application = new Application();
+        $command = new MarsRoverCommand('app:mars-rover');
+        $application->add($command);
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'plateau' => '5 5',
+            'rover1' => '1 2 N',
+            'instructions1' => null,
+            'rover2' => '3 3 E',
+            'instructions2' => 'MMRMMRMRRM'
+        ]);
+    }
+
+    public function testInvalidRover2Position(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $application = new Application();
+        $command = new MarsRoverCommand('app:mars-rover');
+        $application->add($command);
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'plateau' => '5 5',
+            'rover1' => '1 2 N',
+            'instructions1' => 'LMLMLMLMM',
+            'rover2' => null,
+            'instructions2' => 'MMRMMRMRRM'
+        ]);
+    }
+
+    public function testInvalidRover2Instructions(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $application = new Application();
+        $command = new MarsRoverCommand('app:mars-rover');
+        $application->add($command);
+
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([
+            'plateau' => '5 5',
+            'rover1' => '1 2 N',
+            'instructions1' => 'LMLMLMLMM',
+            'rover2' => '3 3 E',
+            'instructions2' => null
+        ]);
     }
 }
