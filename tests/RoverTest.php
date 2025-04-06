@@ -4,6 +4,7 @@ namespace App\Tests;
 
 use App\Plateau;
 use App\Rover;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 class RoverTest extends TestCase
@@ -17,6 +18,15 @@ class RoverTest extends TestCase
         $this->assertEquals('1 1 W', $result);
     }
 
+    public function testTurnLeftInvalidOrientation(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $plateau = new Plateau(5, 5);
+        $rover = new Rover(1, 1, 'X', $plateau);
+        $rover->readAndProcessInstructions('L');
+    }
+
     public function testTurnRight(): void
     {
         $plateau = new Plateau(5, 5);
@@ -24,6 +34,15 @@ class RoverTest extends TestCase
         $result = $rover->readAndProcessInstructions('R');
 
         $this->assertEquals('1 1 E', $result);
+    }
+
+    public function testTurnRightInvalidOrientation(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+
+        $plateau = new Plateau(5, 5);
+        $rover = new Rover(1, 1, 'X', $plateau);
+        $rover->readAndProcessInstructions('R');
     }
 
     public function testMoveNorth(): void
