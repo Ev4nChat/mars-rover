@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace Tests;
 
 use App\Plateau;
 use App\Rover;
@@ -99,5 +99,4 @@ class RoverTest extends TestCase
 
         $this->assertEquals('0 1 W', $result);
     }
-
 }

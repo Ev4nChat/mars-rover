@@ -1,7 +1,6 @@
 <?php
 
-
-namespace App\Tests\Command;
+namespace Tests\Command;
 
 use App\Command\MarsRoverCommand;
 use InvalidArgumentException;

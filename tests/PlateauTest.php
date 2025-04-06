@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests;
+namespace Tests;
 
 use App\Plateau;
 use PHPUnit\Framework\TestCase;
 
-Class PlateauTest extends TestCase
+class PlateauTest extends TestCase
 {
     public function testPlateau(): void
     {
