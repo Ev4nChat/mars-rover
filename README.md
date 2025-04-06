@@ -71,3 +71,9 @@ To generate an HTML coverage report, please run the following command, and then 
 directory in your project, where you can find an `index.html` that can be accessed via a browser.
 
 `./vendor/bin/phpunit --coverage-html coverage-report --coverage-filter=src`
+
+Lastly, PHPStan and CodeSniffer have been added to the project.
+
+To run PHPStan, please use `vendor/bin/phpstan`.
+
+To run CodeSniffer, please use `vendor/bin/phpcs`
